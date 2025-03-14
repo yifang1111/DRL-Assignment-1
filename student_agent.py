@@ -20,7 +20,7 @@ def get_action(obs):
     # NOTE: Keep in mind that your Q-table may not cover all possible states in the testing environment.
     #       To prevent crashes, implement a fallback strategy for missing keys. 
     #       Otherwise, even if your agent performs well in training, it may fail during testing.
-    obs = torch.FloatTensor(obs).to(device)
+    obs = torch.tensor(obs, dtype=torch.float32).to(device)
     with torch.no_grad():
         q_values = agent.model(obs)
     return torch.argmax(q_values).item()
