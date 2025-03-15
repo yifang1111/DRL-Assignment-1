@@ -6,13 +6,13 @@ import torch.nn.functional as F
 import numpy as np
 import random
 from collections import deque
-from simple_custom_taxi_env import SimpleTaxiEnv  # Ensure your environment file is named correctly
+from simple_custom_taxi_env import SimpleTaxiEnv
 
-# Define the DQN Model
+
 class DQN(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(DQN, self).__init__()
-        self.fc1 = nn.Linear(input_dim, 256)  # Increased from 128
+        self.fc1 = nn.Linear(input_dim, 256) 
         self.fc2 = nn.Linear(256, 128)
         self.fc3 = nn.Linear(128, 128)
         self.fc4 = nn.Linear(128, output_dim)
@@ -24,7 +24,7 @@ class DQN(nn.Module):
         return self.fc4(x)
 
 
-# Define the Agent
+
 class DQNAgent:
     def __init__(self, state_size, action_size):
         self.state_size = state_size
@@ -87,10 +87,9 @@ class DQNAgent:
         self.update(states, actions, target_q_values)
         
 
-# Training the Agent
-def train_agent(episodes=5000):
+
+def train_agent(episodes=10000):
     env = SimpleTaxiEnv(fuel_limit=5000)
-    # state_size = len(env.get_state())
     state_size = 16
     action_size = 6  
     agent = DQNAgent(state_size, action_size)
@@ -120,19 +119,15 @@ def train_agent(episodes=5000):
             step += 1
 
         epsilon = max(epsilon_end, epsilon * epsilon_decay_rate)
-        print(f"🚀 Episode {episode + 1}/{episodes}, Total Reward: {total_reward:.2f}, Epsilon: {epsilon:.3f}")
+        # print(f"Episode {episode + 1}/{episodes}, Total Reward: {total_reward:.2f}, Epsilon: {epsilon:.3f}")
 
-
-        # if episode % 100 == 0:
-        #     print(f"Episode {episode+1}/{episodes}, Total Reward: {total_reward}, Epsilon: {epsilon:.4f}")
-        
-        # rewards_per_episode.append(total_reward)
-        # if (episode + 1) % 100 == 0:
-        #     avg_reward = np.mean(rewards_per_episode[-100:])
-        #     print(f"🚀 Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
+        rewards_per_episode.append(total_reward)
+        if (episode + 1) % 100 == 0:
+            avg_reward = np.mean(rewards_per_episode[-100:])
+            print(f"Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
 
     
-    torch.save(agent.model.state_dict(), "dqn_taxi_model_5000.pth")
+    torch.save(agent.model.state_dict(), "dqn_taxi_model_5000_ep10000.pth")
     print("Training completed and model saved.")
 
 if __name__ == "__main__":
