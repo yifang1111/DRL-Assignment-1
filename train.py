@@ -88,14 +88,14 @@ class DQNAgent:
         
 
 
-def train_agent(episodes=12000):
+def train_agent(episodes=15000):
     env = SimpleTaxiEnv()
     state_size = 16
     action_size = 6  
     agent = DQNAgent(state_size, action_size)
     epsilon=1.0
     epsilon_end=0.01
-    epsilon_decay_rate=0.9999
+    epsilon_decay_rate=0.999 #0.995
     rewards_per_episode = []
     
     for episode in range(episodes):
@@ -127,7 +127,7 @@ def train_agent(episodes=12000):
             print(f"Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
 
     
-    torch.save(agent.model.state_dict(), "checkpoints/dqn_taxi_model_50_ep12000.pth")
+    torch.save(agent.model.state_dict(), "checkpoints/dqn_taxi_model_f50_ep15000_0.999.pth")
     print("Training completed and model saved.")
 
 if __name__ == "__main__":
