@@ -89,7 +89,7 @@ class DQNAgent:
 
 # Training the Agent
 def train_agent(episodes=5000):
-    env = SimpleTaxiEnv()
+    env = SimpleTaxiEnv(fuel_limit=5000)
     # state_size = len(env.get_state())
     state_size = 16
     action_size = 6  
@@ -120,17 +120,19 @@ def train_agent(episodes=5000):
             step += 1
 
         epsilon = max(epsilon_end, epsilon * epsilon_decay_rate)
+        print(f"🚀 Episode {episode + 1}/{episodes}, Total Reward: {total_reward:.2f}, Epsilon: {epsilon:.3f}")
+
 
         # if episode % 100 == 0:
         #     print(f"Episode {episode+1}/{episodes}, Total Reward: {total_reward}, Epsilon: {epsilon:.4f}")
         
-        rewards_per_episode.append(total_reward)
-        if (episode + 1) % 100 == 0:
-            avg_reward = np.mean(rewards_per_episode[-100:])
-            print(f"🚀 Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
+        # rewards_per_episode.append(total_reward)
+        # if (episode + 1) % 100 == 0:
+        #     avg_reward = np.mean(rewards_per_episode[-100:])
+        #     print(f"🚀 Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
 
     
-    torch.save(agent.model.state_dict(), "dqn_taxi_model.pth")
+    torch.save(agent.model.state_dict(), "dqn_taxi_model_5000.pth")
     print("Training completed and model saved.")
 
 if __name__ == "__main__":
