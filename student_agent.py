@@ -9,7 +9,7 @@ from train import DQNAgent
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 agent = DQNAgent(16, 6)
-agent.model.load_state_dict(torch.load("checkpoints/dqn_taxi_model_f50_ep5000_0.999.pth", map_location=torch.device('cpu')))
+agent.model.load_state_dict(torch.load("checkpoints/dqn_taxi_model_50_ep10000.pth", map_location=torch.device('cpu')))
 agent.model.eval()
 agent.model.to(device)
 
