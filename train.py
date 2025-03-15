@@ -89,7 +89,7 @@ class DQNAgent:
 
 
 def train_agent(episodes=10000):
-    env = SimpleTaxiEnv(fuel_limit=5000)
+    env = SimpleTaxiEnv()
     state_size = 16
     action_size = 6  
     agent = DQNAgent(state_size, action_size)
@@ -127,7 +127,7 @@ def train_agent(episodes=10000):
             print(f"Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
 
     
-    torch.save(agent.model.state_dict(), "dqn_taxi_model_5000_ep10000.pth")
+    torch.save(agent.model.state_dict(), "dqn_taxi_model_50_ep10000.pth")
     print("Training completed and model saved.")
 
 if __name__ == "__main__":
