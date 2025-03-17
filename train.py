@@ -88,7 +88,7 @@ class DQNAgent:
     
     def normalize_grid_size(self, state):
         state_array = np.array(state, dtype=np.float32)  
-        grid_size = max(state[:10]) + 1
+        grid_size = max(state[2:10]) + 1
         state_array[:10] = state_array[:10] / grid_size 
 
         return state
