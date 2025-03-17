@@ -87,7 +87,7 @@ class DQNAgent:
     
     def normalize_grid_size(self, state):
         state = torch.tensor(state, dtype=torch.float32).to(self.device)
-        grid_size = torch.max(state[2:10]) + 1
+        grid_size = torch.max(state[2:6]) + 1
         state[:10] = state[:10] / grid_size 
 
         return state
