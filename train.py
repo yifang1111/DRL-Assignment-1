@@ -53,7 +53,6 @@ class DQNAgent:
         self.memory.append((state, action, reward, next_state, done))
     
     def get_action(self, state, epsilon):
-        state = torch.tensor(state, dtype=torch.float32).to(self.device)
         if np.random.rand() <= epsilon:
             return np.random.choice(self.action_size)
         with torch.no_grad():
@@ -87,9 +86,9 @@ class DQNAgent:
         self.update(states, actions, target_q_values)
     
     def normalize_grid_size(self, state):
-        state_array = np.array(state, dtype=np.float32)  
-        grid_size = max(state[2:10]) + 1
-        state_array[:10] = state_array[:10] / grid_size 
+        state = torch.tensor(state, dtype=torch.float32).to(self.device)
+        grid_size = torch.max(state[2:10]) + 1
+        state[:10] = state[:10] / grid_size 
 
         return state
         
