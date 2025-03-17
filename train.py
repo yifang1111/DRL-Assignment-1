@@ -85,17 +85,24 @@ class DQNAgent:
             target_q_values = rewards + (self.gamma * next_q_values * (1 - dones))
         
         self.update(states, actions, target_q_values)
+    
+    def normalize_grid_size(self, state):
+        state_array = np.array(state, dtype=np.float32)  
+        grid_size = max(state[:10]) + 1
+        state_array[:10] = state_array[:10] / grid_size 
+
+        return state
         
 
 
-def train_agent(episodes=5000):
+def train_agent(episodes=10000):
     env = SimpleTaxiEnv()
     state_size = 16
     action_size = 6  
     agent = DQNAgent(state_size, action_size)
     epsilon=1.0
     epsilon_end=0.01
-    epsilon_decay_rate=0.999 #0.995
+    epsilon_decay_rate=0.9995
     rewards_per_episode = []
     
     for episode in range(episodes):
@@ -103,10 +110,13 @@ def train_agent(episodes=5000):
         total_reward = 0
         done = False
         step = 0 
+
+        obs = agent.normalize_grid_size(obs)
         
         while not done:
             action = agent.get_action(obs, epsilon)
             next_obs, reward, done, _ = env.step(action)
+            next_obs = agent.normalize_grid_size(next_obs)
             agent.remember(obs, action, reward, next_obs, done)
             obs = next_obs
             total_reward += reward
@@ -127,7 +137,7 @@ def train_agent(episodes=5000):
             print(f"Episode {episode + 1}/{episodes}, Average Reward: {avg_reward:.2f}, Epsilon: {epsilon:.3f}")
 
     
-    torch.save(agent.model.state_dict(), "checkpoints/dqn_taxi_model_f50_ep5000_0.999.pth")
+    torch.save(agent.model.state_dict(), "checkpoints/dqn_taxi_model_f50_ep10000_normalize.pth")
     print("Training completed and model saved.")
 
 if __name__ == "__main__":

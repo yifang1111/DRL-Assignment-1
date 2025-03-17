@@ -9,7 +9,7 @@ from train import DQNAgent
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 agent = DQNAgent(16, 6)
-agent.model.load_state_dict(torch.load("checkpoints/dqn_taxi_model_50_ep10000.pth", map_location=torch.device('cpu')))
+agent.model.load_state_dict(torch.load("checkpoints/dqn_taxi_model_f50_ep10000_normalize.pth", map_location=torch.device('cpu')))
 agent.model.eval()
 agent.model.to(device)
 
@@ -20,6 +20,7 @@ def get_action(obs):
     # NOTE: Keep in mind that your Q-table may not cover all possible states in the testing environment.
     #       To prevent crashes, implement a fallback strategy for missing keys. 
     #       Otherwise, even if your agent performs well in training, it may fail during testing.
+    obs = agent.normalize_grid_size(obs)
     obs = torch.tensor(obs, dtype=torch.float32).to(device)
     with torch.no_grad():
         q_values = agent.model(obs)
